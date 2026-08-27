@@ -11277,7 +11277,12 @@ async function initSupabaseAuth() {
 (function () {
   // localhost, or the tailnet preview host — the variant has to be judged on a real
   // phone, and *.ts.net can never be a customer-facing production hostname.
-  if (!/^(localhost|127\.0\.0\.1)$/.test(location.hostname) && !/\.ts\.net$/.test(location.hostname)) return;
+  // PREVIEW BUILD ONLY — github.io added so both identities can be compared on the
+  // public preview. The source keeps the original guard: this block is an
+  // experimental A/B switch marked "remove before merge" and must never reach a
+  // real production host on its own.
+  if (!/^(localhost|127\.0\.0\.1)$/.test(location.hostname) && !/\.ts\.net$/.test(location.hostname)
+      && !/\.github\.io$/.test(location.hostname)) return;
   try {
     if (localStorage.getItem('iw-theme') === 'resonance')
       document.documentElement.setAttribute('data-theme', 'resonance');

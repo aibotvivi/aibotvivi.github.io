@@ -19,3 +19,14 @@ server, so on this URL:
 
 It is a design preview, not a working deployment. The working app runs on a private host
 with the server behind it.
+
+## Deliberate differences from source
+
+This copy is not byte-identical to `index-almanac.html` upstream. Two changes, both made
+because this is a public preview and neither backported:
+
+1. The tailnet hostname was removed from a code comment.
+2. The light/dark identity toggle is enabled here. Upstream it is fenced to localhost and
+   the tailnet — it is an experimental A/B switch marked "remove before merge" — so on a
+   normal host no button appears. The preview widens the guard to `*.github.io` so both
+   identities can be compared. The dark theme's CSS was always present either way.
