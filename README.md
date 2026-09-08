@@ -4,7 +4,10 @@ GitHub Pages user site. Each folder is served as a path.
 
 | path | what it is |
 |---|---|
+| `/` | Redirects to `/portfolio/`. Carries the Google tags so the bare domain,
+which is the URL on the analytics data stream, is detectable — it used to return a 404. |
 | `/innerwaves/` | InnerWaves — static preview of the almanac interface |
+| `/portfolio/` | Vivien Chin's portfolio — served from the separate `aibotvivi/portfolio` repo |
 
 ## /innerwaves — read this before assuming it is broken
 
