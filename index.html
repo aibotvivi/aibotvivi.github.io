@@ -14,7 +14,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-5FTTLHDT');</script>
 <!-- End Google Tag Manager -->
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NW60T4SQ4X"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NW60T4SQ4X" onload="window.tagLoaded=1"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -26,9 +26,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="canonical" href="https://aibotvivi.github.io/portfolio/">
 <link rel="icon" href="portfolio/assets/img/favicon.png">
 <meta name="color-scheme" content="light dark">
-<!-- The redirect a browser without JavaScript still follows. One second, so the
-     tag above has a chance to load first; script below beats it for everyone else. -->
-<meta http-equiv="refresh" content="1; url=portfolio/">
+<!-- Only for browsers running no JavaScript. Left outside <noscript> it raced the
+     tag, and a visit reported by nobody is exactly what "tag not detected" means. -->
+<noscript><meta http-equiv="refresh" content="0; url=portfolio/"></noscript>
 <style>
   :root { color-scheme: light dark; --page: #F5F3ED; --ink: #1F1F1F; --body: #5A5A5A; --desk: #2839c2; }
   @media (prefers-color-scheme: dark) { :root { --page: #1A1A1A; --ink: #F4F4F4; --body: #B4B0A6; } }
@@ -62,10 +62,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <a href="portfolio/">Open the portfolio &rarr;</a>
 </main>
 <script>
-  /* replace(), not assign(): the redirect must not leave an entry that Back
-     bounces off, sending the visitor straight here again. Held briefly so the
-     tag above can load and report the visit before the page goes. */
-  setTimeout(function () { location.replace('portfolio/'); }, 700);
+  /* Leave only once the tag has loaded and had a moment to report the visit.
+     A fixed short delay did not do it: gtag.js is fetched asynchronously, so a
+     redirect on a timer can beat it away and the visit is never reported at
+     all — which is what an installation check reads as "tag not detected".
+     replace(), not assign(): Back must not bounce the visitor straight back
+     here. The 3s cap covers a tag that is blocked and never loads. */
+  (function () {
+    var left = false, started = Date.now();
+    function leave() { if (left) { return; } left = true; location.replace('portfolio/'); }
+    (function wait() {
+      var waited = Date.now() - started;
+      if ((window.tagLoaded && waited > 1200) || waited > 3000) { leave(); return; }
+      setTimeout(wait, 100);
+    }());
+  }());
 </script>
 </body>
 </html>
